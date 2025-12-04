@@ -1,0 +1,69 @@
+package StepDefinitions;
+
+import java.time.Duration;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.testng.Assert;
+
+import PageObject.LoginPage;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
+
+public class StepDef {
+
+    WebDriver driver;
+    LoginPage loginpage;
+
+    @Given("User Launch Chrome browser")
+    public void user_launch_chrome_browser() {
+
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--disable-blink-features=AutomationControlled");
+        options.addArguments("--start-maximized");
+        options.addArguments("--disable-infobars");
+        options.addArguments("--disable-notifications");
+        options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
+        options.setExperimentalOption("useAutomationExtension", false);
+
+        driver = new ChromeDriver(options);
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10)); // optional implicit wait
+
+        loginpage = new LoginPage(driver);
+    }
+
+    @When("User opens URL {string}")
+    public void user_opens_url(String url) {
+        driver.get(url);
+    }
+
+    @When("User enters Email as {string} and Password as {string}")
+    public void user_enters_email_and_password(String username, String password) {
+        loginpage.enterUsername(username);
+        loginpage.enterPassword(password);
+    }
+
+    @When("Click on Login")
+    public void click_on_login() {
+        loginpage.clickOnLoginButton();
+    }
+
+    @Then("Page Title should be {string}")
+    public void page_title_should_be(String expectedTitle) {
+        String actualTitle = driver.getTitle();
+        Assert.assertEquals(actualTitle, expectedTitle, "❌ Page title mismatch!");
+    }
+
+    @When("User click on Log out link")
+    public void user_click_on_log_out_link() {
+        loginpage.clickOnUserIDButton();  // first click the dropdown
+        loginpage.clickOnLogoutButton();  // then click logout
+    }
+
+    @Then("close browser")
+    public void close_browser() {
+        driver.quit();
+    }
+}
