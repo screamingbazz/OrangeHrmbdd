@@ -1,0 +1,9 @@
+Feature: Customers
+Scenario: Add New customer
+Given User Launch Chrome Browser
+ When User open URL "https://opensource-demo.orangehrmlive.com/"
+ And User enters username as "Admin" and Password as "admin123"
+ And Click on Login
+ Then User can view dashboard
+ When User Click on customers menu
+ Add 
