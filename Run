@@ -1,0 +1,16 @@
+package TestRunner;
+
+import org.junit.runner.RunWith;
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+        features = ".//Features/LoginFeature.feature", // path to your feature file
+        glue = "StepDefinitions",                       // match your package name
+        dryRun = false,
+        monochrome = true,
+        plugin = {"pretty", "html:target/cucumber-reports.html"} // generates HTML report
+)
+public class Run {
+}
